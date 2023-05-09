@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,15 +6,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import axios from "axios";
+import { Suspense } from "react";
 import "./style.css";
 
 export default function ProductList({ setSelectedProduct, open, setOpen }) {
   const [productLists, setProductLists] = React.useState([]);
 
-  React.useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((json) => setProductLists(json));
+  useEffect(() => {
+    axios.get("https://fakestoreapi.com/products").then((response) => {
+      setProductLists(response.data);
+    });
   }, []);
 
   return (
@@ -47,7 +49,7 @@ export default function ProductList({ setSelectedProduct, open, setOpen }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               onClick={() => {
                 setSelectedProduct(item);
-                setOpen(true)
+                setOpen(true);
               }}
             >
               <TableCell align="left">
@@ -60,7 +62,7 @@ export default function ProductList({ setSelectedProduct, open, setOpen }) {
                       style={{ width: "30px", height: "40px" }}
                     />
                   </div>
-                  <div style={{ height: "40px", cursor: "pointer" }}>
+                  <div style={{ cursor: "pointer" }}>
                     <p className="mx-2">{item.title}</p>
                   </div>
                 </div>

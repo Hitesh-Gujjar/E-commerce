@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import PrimaryButton from "../assets/PrimaryButton";
+import CartIcon from "../assets/Icon/CartIcon.png";
+import axios from "axios";
+
 function ProductDetails({ selectedProduct }) {
   const [selectedItem, setSelectedItem] = useState();
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${selectedProduct.id}`)
-      .then((res) => res.json())
-      .then((json) => setSelectedItem(json));
-    console.log("selectedItem..", selectedItem);
-  }, [selectedProduct]);
-
+    axios
+      .get(`https://fakestoreapi.com/products/${selectedProduct.id}`)
+      .then((response) => {
+        setSelectedItem(response.data);
+      });
+  }, []);
   return (
     <div className="container">
       <div>
@@ -46,7 +50,7 @@ function ProductDetails({ selectedProduct }) {
                 ${selectedItem?.price}
               </small>
             </div>
-
+            //item information
             <div className="borderArea">
               <div className="d-flex justify-content-between my-4">
                 <label>Size</label>
@@ -81,13 +85,10 @@ function ProductDetails({ selectedProduct }) {
                 <p>Available Count:{selectedItem?.rating?.count}</p>
               </div>
             </div>
+            //button
             <div className="d-flex justify-content-end my-4">
-              <Button variant="contained" color="secondary" className="mx-2 py-2">
-                Add to Cart
-              </Button>
-              <Button variant="contained" color="secondary" className="mx-2 py-2">
-                Buy Now
-              </Button>
+              <PrimaryButton title="Add to Cart" icon="cart"></PrimaryButton>
+              <PrimaryButton title=" Buy Now"></PrimaryButton>
             </div>
           </div>
         </div>
